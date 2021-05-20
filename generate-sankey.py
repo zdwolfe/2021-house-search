@@ -15,6 +15,10 @@ def add_options(parser):
                         dest="html_filepath",
                         type=str,
                         help="The file path to output the graph to as html.")
+    parser.add_argument("--publish-to-plotly",
+                        dest="publish_to_plotly",
+                        action="store_true",
+                        help="Should the graph be published to plotly?")
     parser.add_argument("--plotly-username",
                         dest="plotly_username",
                         type=str,
@@ -45,7 +49,10 @@ def generate(options):
     graph = Graph.fromBrowserHistory(browser_listing_history)
     graph.show_fig()
     graph.write_fig_to_html_filepath(html_filepath)
-    graph.push_to_plotly(options.plotly_username, options.plotly_api_key, options.plotly_chart_name)
+
+    if options.publish_to_plotly:
+        graph.push_to_plotly(options.plotly_username, options.plotly_api_key, options.plotly_chart_name)
+
 
 if __name__ == '__main__':
     options = get_options()
