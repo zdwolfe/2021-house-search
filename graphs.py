@@ -69,6 +69,12 @@ def generate_graph(browser_history):
         3
     )  # from memory
 
+    scheduled_to_abandoned = (
+        labels.index("Scheduled Tour"),
+        labels.index("Abandoned"),
+        3
+    )  # from gcal
+
     considered_applied = (
         labels.index("Considered"),
         labels.index("Applied"),
@@ -95,7 +101,7 @@ def generate_graph(browser_history):
 
     manual_edges = [listing_viewed_to_considered, considered_to_not_interested, considered_applied,
                     considered_to_treq, requested_tour_to_scheduled, requested_tour_to_abandoned,
-                    scheduled_to_toured, toured_to_applied, applied_to_accepted, applied_to_abandoned]
+                    scheduled_to_toured, scheduled_to_abandoned, toured_to_applied, applied_to_accepted, applied_to_abandoned]
 
     # https://plotly.com/python/sankey-diagram/
     sources = listing_viewed_sources + [manual_edge[0] for manual_edge in manual_edges]
