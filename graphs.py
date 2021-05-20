@@ -136,7 +136,7 @@ class Graph:
                 thickness=20,
                 line=dict(color="black", width=0.5),
                 label=labels,
-                color="blue",
+                color="#595e28",
                 x=xs,
                 y=ys
 
