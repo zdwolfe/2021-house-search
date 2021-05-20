@@ -14,8 +14,9 @@ def generate_graph(browser_history):
     # ["zillow: 4"]
     domain_labels = [domain_label(domain_label_datum) for domain_label_datum in domain_label_data]
 
-    destination_labels = ["Viewed Listing", "Requested Tour", "Scheduled Tour", "Toured", "Requested Application",
-                          "Applied", "Rejected", "Accepted"]
+    destination_labels = ["Viewed Listing", "Considered", "Requested Tour", "Scheduled Tour",
+                          "Toured", "Requested Application",
+                          "Applied", "Abandoned", "Accepted"]
     labels = domain_labels + destination_labels
 
 
@@ -32,10 +33,22 @@ def generate_graph(browser_history):
     listing_viewed_targets = source_target_value_listing_edges[1]
     listing_viewed_values = source_target_value_listing_edges[2]
 
-    listing_viewed_to_requested_tour = (
+    listing_viewed_to_considered = (
         labels.index("Viewed Listing"),
+        labels.index("Considered"),
+        22 + 31  # applied + "not interested" cards in trello
+    )  # from trello and gmail
+
+    considered_to_treq = (
+        labels.index("Considered"),
         labels.index("Requested Tour"),
         22
+    )  # from trello and gmail
+
+    considered_to_not_interested = (
+        labels.index("Considered"),
+        labels.index("Abandoned"),
+        31
     )  # from trello and gmail
 
     requested_tour_to_scheduled = (
@@ -44,9 +57,9 @@ def generate_graph(browser_history):
         6
     )  # from gcal
 
-    requested_tour_to_rejected = (
+    requested_tour_to_abandoned = (
         labels.index("Requested Tour"),
-        labels.index("Rejected"),
+        labels.index("Abandoned"),
         5
     )  # from gcal
 
@@ -68,9 +81,9 @@ def generate_graph(browser_history):
         3
     )  # from memory
 
-    applied_to_rejected = (
+    applied_to_abandoned = (
         labels.index("Applied"),
-        labels.index("Rejected"),
+        labels.index("Abandoned"),
         7
     )  # from memory
 
@@ -80,13 +93,19 @@ def generate_graph(browser_history):
         1
     )  # from memory
 
-    manual_edges = [viewed_to_applied, listing_viewed_to_requested_tour, requested_tour_to_scheduled, requested_tour_to_rejected,
-                    scheduled_to_toured, toured_to_applied, applied_to_accepted, applied_to_rejected]
+    manual_edges = [listing_viewed_to_considered, considered_to_not_interested, viewed_to_applied,
+                    considered_to_treq, requested_tour_to_scheduled, requested_tour_to_abandoned,
+                    scheduled_to_toured, toured_to_applied, applied_to_accepted, applied_to_abandoned]
 
     # https://plotly.com/python/sankey-diagram/
     sources = listing_viewed_sources + [manual_edge[0] for manual_edge in manual_edges]
     targets = listing_viewed_targets + [manual_edge[1] for manual_edge in manual_edges]
     values = listing_viewed_values + [manual_edge[2] for manual_edge in manual_edges]
+
+    domain_label_nones = [None for domain_label in domain_labels]
+    destination_label_nones = [None for destination_label in range(0, len(destination_labels) - 2)]
+    xs = domain_label_nones + destination_label_nones + [0.9, 0.9]
+    ys = domain_label_nones + [0.5, 0.5, 0.75, 0.75] + [0.1, 0.9]
 
     fig = go.Figure(data=[go.Sankey(
         node=dict(
@@ -94,8 +113,11 @@ def generate_graph(browser_history):
             thickness=20,
             line=dict(color="black", width=0.5),
             label=labels,
-            color="blue"
-        ),
+            color="blue",
+            x=xs,
+            y=ys
+
+    ),
         link=dict(
             source=sources,
             target=targets,
