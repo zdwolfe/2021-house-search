@@ -9,7 +9,7 @@ class HistoryRecord:
     @classmethod
     def fromUrl(cls, url):
         return HistoryRecord(
-            domain=urlparse(url).netloc,
+            domain=urlparse(url).netloc.replace("www.", ""),
             url=url
         )
 

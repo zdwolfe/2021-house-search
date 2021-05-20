@@ -1,15 +1,32 @@
 import plotly.graph_objects as go
 
 
+# ("zillow.com", 4) => "zillow.com: 4"
+def domain_label(datum):
+    return "%s: %d" % datum
+
 def generate_graph(browser_history):
     domains = list(browser_history.keys())
-    destination_labels = ["Viewed Listing", "Requested Tour", "Scheduled Tour", "Toured", "Requested Application", "Applied", "Rejected",
-                          "Accepted"]
-    labels = domains + destination_labels
+
+    # [("zillow", 4)]
+    domain_label_data = [(domain, len(browser_history[domain])) for domain in domains]
+
+    # ["zillow: 4"]
+    domain_labels = [domain_label(domain_label_datum) for domain_label_datum in domain_label_data]
+
+    destination_labels = ["Viewed Listing", "Requested Tour", "Scheduled Tour", "Toured", "Requested Application",
+                          "Applied", "Rejected", "Accepted"]
+    labels = domain_labels + destination_labels
 
     viewed_listing_index = labels.index("Viewed Listing")
+
     listing_viewed_edges = [
-        (labels.index(domain), viewed_listing_index, len(browser_history[domain])) for domain in domains
+        (
+            labels.index(domain_label(domain_datum)),
+            viewed_listing_index,
+            len(browser_history[domain_datum[0]])
+        )
+        for domain_datum in domain_label_data
     ]
     source_target_value_listing_edges = list(map(list, zip(*listing_viewed_edges)))
     listing_viewed_sources = source_target_value_listing_edges[0]
