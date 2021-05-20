@@ -69,8 +69,8 @@ def generate_graph(browser_history):
         3
     )  # from memory
 
-    viewed_to_applied = (
-        labels.index("Viewed Listing"),
+    considered_applied = (
+        labels.index("Considered"),
         labels.index("Applied"),
         4
     )  # from gmail
@@ -93,7 +93,7 @@ def generate_graph(browser_history):
         1
     )  # from memory
 
-    manual_edges = [listing_viewed_to_considered, considered_to_not_interested, viewed_to_applied,
+    manual_edges = [listing_viewed_to_considered, considered_to_not_interested, considered_applied,
                     considered_to_treq, requested_tour_to_scheduled, requested_tour_to_abandoned,
                     scheduled_to_toured, toured_to_applied, applied_to_accepted, applied_to_abandoned]
 
@@ -103,9 +103,9 @@ def generate_graph(browser_history):
     values = listing_viewed_values + [manual_edge[2] for manual_edge in manual_edges]
 
     domain_label_nones = [None for domain_label in domain_labels]
-    destination_label_nones = [None for destination_label in range(0, len(destination_labels) - 2)]
+    destination_label_nones = [None for destination_label in range(0, len(destination_labels) - 3)]
     xs = domain_label_nones + destination_label_nones + [0.9, 0.9]
-    ys = domain_label_nones + [0.5, 0.5, 0.75, 0.75] + [0.1, 0.9]
+    ys = domain_label_nones + destination_label_nones + [0.1, 0.5]
 
     fig = go.Figure(data=[go.Sankey(
         node=dict(
