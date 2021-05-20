@@ -15,6 +15,18 @@ def add_options(parser):
                         dest="html_filepath",
                         type=str,
                         help="The file path to output the graph to as html.")
+    parser.add_argument("--plotly-username",
+                        dest="plotly_username",
+                        type=str,
+                        help="Plotly Chart Studio username")
+    parser.add_argument("--plotly-api-key",
+                        dest="plotly_api_key",
+                        type=str,
+                        help="Plotly Chart Studio API key")
+    parser.add_argument("--plotly-chart-name",
+                        dest="plotly_chart_name",
+                        type=str,
+                        help="Plotly Chart Studio name")
 
 
 def get_options():
@@ -33,6 +45,7 @@ def generate(options):
     graph = Graph.fromBrowserHistory(browser_listing_history)
     graph.show_fig()
     graph.write_fig_to_html_filepath(html_filepath)
+    graph.push_to_plotly(options.plotly_username, options.plotly_api_key, options.plotly_chart_name)
 
 if __name__ == '__main__':
     options = get_options()

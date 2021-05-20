@@ -1,5 +1,8 @@
 import plotly.graph_objects as go
 import plotly.io as pio
+import chart_studio
+import chart_studio.plotly as py
+
 
 class Graph:
     def __init__(self, browser_history, fig):
@@ -20,6 +23,10 @@ class Graph:
 
     def write_fig_to_html_filepath(self, html_filepath):
         pio.write_html(self.fig, file=html_filepath, auto_open=False)
+
+    def push_to_plotly(self, plotly_username, plotly_api_key, plotly_chart_name):
+        chart_studio.tools.set_credentials_file(username=plotly_username, api_key=plotly_api_key)
+        py.plot(self.fig, filename = plotly_chart_name, auto_open=True)
 
     @staticmethod
     def get_fig(browser_history):
