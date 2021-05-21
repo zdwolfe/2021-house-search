@@ -15,6 +15,10 @@ def add_options(parser):
                         dest="html_filepath",
                         type=str,
                         help="The file path to output the graph to as html.")
+    parser.add_argument("--png-file-path",
+                        dest="png_filepath",
+                        type=str,
+                        help="The file path to output the graph to as png.")
     parser.add_argument("--publish-to-plotly",
                         dest="publish_to_plotly",
                         action="store_true",
@@ -43,12 +47,16 @@ def get_options():
 
 def generate(options):
     chrome_sqlite_history_path = options.chrome_sqlite_history_path
-    html_filepath = options.html_filepath
 
     browser_listing_history = browser_history.get_listing_history(chrome_sqlite_history_path)
     graph = Graph.fromBrowserHistory(browser_listing_history)
     graph.show_fig()
-    graph.write_fig_to_html_filepath(html_filepath)
+
+    if options.html_filepath:
+        graph.write_fig_to_html_filepath(options.html_filepath)
+
+    if options.png_filepath:
+        graph.write_fig_to_png_filepath(options.png_filepath)
 
     if options.publish_to_plotly:
         graph.push_to_plotly(options.plotly_username, options.plotly_api_key, options.plotly_chart_name)

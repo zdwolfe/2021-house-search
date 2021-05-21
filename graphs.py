@@ -24,6 +24,9 @@ class Graph:
     def write_fig_to_html_filepath(self, html_filepath):
         pio.write_html(self.fig, file=html_filepath, auto_open=False)
 
+    def write_fig_to_png_filepath(self, png_filepath):
+        self.fig.write_image(png_filepath, width=2304, height=1440)
+
     def push_to_plotly(self, plotly_username, plotly_api_key, plotly_chart_name):
         chart_studio.tools.set_credentials_file(username=plotly_username, api_key=plotly_api_key)
         py.plot(self.fig, filename = plotly_chart_name, auto_open=True)
