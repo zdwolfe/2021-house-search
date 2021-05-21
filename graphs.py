@@ -41,7 +41,7 @@ class Graph:
         # ["zillow: 4"]
         domain_labels = [Graph.to_domain_label(domain_label_datum) for domain_label_datum in domain_label_data]
 
-        destination_labels = ["Viewed Listing: 432", "Considered: 57", "Requested Tour: 22", "Scheduled Tour: 6",
+        destination_labels = ["Viewed Listing: 442", "Considered: 57", "Requested Tour: 22", "Scheduled Tour: 6",
                               "Toured: 3", "Requested Application",
                               "Applied: 8", "Abandoned: 46", "Accepted: 1"]
         labels = domain_labels + destination_labels
@@ -50,7 +50,7 @@ class Graph:
         listing_viewed_edges = [
             (
                 labels.index(Graph.to_domain_label(domain_datum)),
-                labels.index("Viewed Listing: 432"),
+                labels.index("Viewed Listing: 442"),
                 len(browser_history[domain_datum[0]])
             )
             for domain_datum in domain_label_data
@@ -61,7 +61,7 @@ class Graph:
         listing_viewed_values = source_target_value_listing_edges[2]
 
         listing_viewed_to_considered = (
-            labels.index("Viewed Listing: 432"),
+            labels.index("Viewed Listing: 442"),
             labels.index("Considered: 57"),
             22 + 31  # applied + "not interested" cards in trello
         )  # from trello and gmail
