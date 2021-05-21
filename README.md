@@ -20,4 +20,4 @@ Produces:
 
 ![](home-search-sankey.png)
 
-[and an interactive version](home-search-sankey.html)
+[and an interactive version](https://zdwolfe.github.io/2021-house-search/home-search-sankey.html)
