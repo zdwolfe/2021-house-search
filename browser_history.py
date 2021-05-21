@@ -50,7 +50,7 @@ def get_raw_results(connect_path):
                     OR url LIKE 'https://www.seattlerentals.com/_%'
                         AND url NOT LIKE 'https://www.seattlerentals.com/%search%'
                     OR url LIKE 'https://showmojo.com/l/%'
-                    OR url LIKE 'https://seattle.craigslist.org/see/apa/d/'
+                    OR url LIKE 'https://seattle.craigslist.org/see/apa/d/%'
                     ;
             """)
         results = c.fetchall()
